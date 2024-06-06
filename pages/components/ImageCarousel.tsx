@@ -80,7 +80,7 @@ const ImageCarousel: React.FC = () => {
                 src={image}
                 alt={`Slide ${index}`}
                 layout="fill"
-                objectFit="contain"
+                objectFit="cover"
                 className={styles['carousel__device-image']}
               />
             </div>
