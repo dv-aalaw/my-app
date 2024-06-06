@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SwiperCore from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import {Navigation, Pagination, EffectFade, Controller, Autoplay} from 'swiper/modules'
+import { Navigation, Pagination, EffectFade, Controller, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -9,16 +9,20 @@ import 'swiper/css/effect-fade';
 import 'swiper/css/controller';
 import 'swiper/css/autoplay';
 import Image from 'next/image';
+import styles from '@/styles/ImageCarousel.module.css';
 
 SwiperCore.use([Navigation, Pagination, EffectFade, Controller, Autoplay]);
 
 const ImageCarousel: React.FC = () => {
   const [titleSwiper, setTitleSwiper] = useState<SwiperCore | null>(null);
   const [imageSwiper, setImageSwiper] = useState<SwiperCore | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const titles = ['Mint Ice', 'Very Berry', 'SOMETHING ELSE'];
-  const images = ['/image1.png', '/image2.png', '/image3.png']; 
-  const backgrounds = ['#b0e0e6', '#f08080', '#dda0dd']; 
+  const titles = ['Mint Ice', 'Strawberry Ice', 'Blue Text', 'Orange Text'];
+  const subtitles = ['Green Vuse Go Reload 1000', 'Red Vuse Go Reload 1000', 'Blue Vuse Go Reload 1000', 'Orange Vuse Go Reload 1000'];
+  const images = ['/green-device.png', '/red-device.png', '/blue-device.png', '/orange-device.png'];
+  const circles = ['/green-circle.png', '/red-circle.png', '/blue-circle.png', '/orange-circle.png'];
+  const backgrounds = ['/green-bg.jpg', '/red-bg.jpg', '/blue-bg.jpg', '/orange-bg.jpg'];
 
   useEffect(() => {
     if (titleSwiper && imageSwiper) {
@@ -29,64 +33,48 @@ const ImageCarousel: React.FC = () => {
     }
   }, [titleSwiper, imageSwiper]);
 
+  useEffect(() => {
+    document.body.style.backgroundImage = `url(${backgrounds[activeIndex]})`;
+  }, [activeIndex]);
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', height: '100vh' }}>
-      <Swiper
-        effect="fade"
-        loop={true}
-        slidesPerView={1}
-        spaceBetween={10}
-        centeredSlides={true}
-        autoplay={{ delay: 3000, disableOnInteraction: false }}
-        onSwiper={setTitleSwiper}
-        controller={{ control: imageSwiper }}
-        className="title-swiper"
-        style={{ width: '100%', height: '50vh' }}
-      >
-        {titles.map((title, index) => (
-          <SwiperSlide key={index} style={{ backgroundColor: backgrounds[index], display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-            <div style={{ textAlign: 'center', color: '#fff', fontSize: '24px', padding: '20px', transition: 'opacity 0.5s ease-in-out' }}>{title}</div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+    <div className={styles['carousel__container']} style={{ backgroundImage: `url(${backgrounds[activeIndex]})` }}>
+      <div className={styles['carousel__text-overlay']}>
+        <h1 className={styles['carousel__title']}>{titles[activeIndex]}</h1>
+        <h2 className={styles['carousel__subtitle']}>{subtitles[activeIndex]}</h2>
+      </div>
 
       <Swiper
-        effect="fade"
         loop={true}
-        slidesPerView={1}
-        spaceBetween={30}
+        slidesPerView={3}
+        spaceBetween={-50}
         centeredSlides={true}
         autoplay={{ delay: 3000, disableOnInteraction: false }}
         onSwiper={setImageSwiper}
-        controller={{ control: titleSwiper }}
-        className="image-swiper"
-        style={{ width: '100%', height: '50vh' }}
-        breakpoints={{
-          640: {
-            slidesPerView: 1.3,
-            centeredSlides: true,
-            spaceBetween: 20,
-          },
-          768: {
-            slidesPerView: 1.5,
-            centeredSlides: true,
-            spaceBetween: 20,
-          },
-          1024: {
-            slidesPerView: 3,
-            centeredSlides: true,
-            spaceBetween: 20,
-          },
-        }}
+        onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+        className={styles['carousel__swiper']}
+        style={{ width: '100%', height: '100%' }}
       >
         {images.map((image, index) => (
-          <SwiperSlide key={index} style={{ backgroundColor: backgrounds[index], display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-            <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+          <SwiperSlide key={index} className={styles['carousel__slide']}>
+            {index === activeIndex && (
+              <div className={styles['carousel__circle-overlay']}>
+                <Image
+                  src={circles[index]}
+                  alt={`Circle ${index}`}
+                  layout="fill"
+                  objectFit="contain"
+                  className={styles['carousel__circle']}
+                />
+              </div>
+            )}
+            <div className={styles['carousel__image-container']}>
               <Image
                 src={image}
                 alt={`Slide ${index}`}
                 layout="fill"
-                objectFit="cover"
+                objectFit="contain"
+                className={styles['carousel__device-image']}
               />
             </div>
           </SwiperSlide>

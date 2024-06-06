@@ -1,0 +1,79 @@
+
+.carousel__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    transition: background-image 0.5s ease-in-out;
+  }
+  
+  .carousel__text-overlay {
+    position: absolute;
+    top: 20px;
+    text-align: center;
+    color: #fff;
+    z-index: 10;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .carousel__title,
+  .carousel__subtitle {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .carousel__title {
+    font-size: 36px;
+  }
+  
+  .carousel__subtitle {
+    font-size: 24px;
+  }
+  
+  .carousel__image-container {
+    position: relative;
+    width: 60%;
+    height: 80%;
+    z-index: 2;
+  }
+  
+  .carousel__circle-overlay {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    top: 25%;
+    left: 25%;
+    animation: rotateIn 0.5s ease-in-out;
+    z-index: 1;
+  }
+  
+  .carousel__circle {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .carousel__device-image {
+    z-index: 2;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes rotateIn {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  .carousel__slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
