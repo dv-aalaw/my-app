@@ -11,6 +11,7 @@ import 'swiper/css/autoplay';
 import Image from 'next/image';
 import styles from '@/styles/ImageCarousel.module.css';
 
+// init the swiper 
 SwiperCore.use([Navigation, Pagination, EffectFade, Controller, Autoplay]);
 
 const ImageCarousel: React.FC = () => {
@@ -18,12 +19,14 @@ const ImageCarousel: React.FC = () => {
   const [imageSwiper, setImageSwiper] = useState<SwiperCore | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
+  // array to colde the info we using.
   const titles = ['Mint Ice', 'Strawberry Ice', 'Blue Text', 'Orange Text'];
   const subtitles = ['Green Vuse Go Reload 1000', 'Red Vuse Go Reload 1000', 'Blue Vuse Go Reload 1000', 'Orange Vuse Go Reload 1000'];
   const images = ['/green-device.png', '/red-device.png', '/blue-device.png', '/orange-device.png'];
   const circles = ['/green-circle.png', '/red-circle.png', '/blue-circle.png', '/orange-circle.png'];
   const backgrounds = ['/green-bg.jpg', '/red-bg.jpg', '/blue-bg.jpg', '/orange-bg.jpg'];
 
+ // use effect to synch the controls of the title and image 
   useEffect(() => {
     if (titleSwiper && imageSwiper) {
       if (titleSwiper.controller && imageSwiper.controller) {
@@ -33,6 +36,7 @@ const ImageCarousel: React.FC = () => {
     }
   }, [titleSwiper, imageSwiper]);
 
+  // use effect to change the background image of the body based on the active slide index
   useEffect(() => {
     document.body.style.backgroundImage = `url(${backgrounds[activeIndex]})`;
   }, [activeIndex]);
@@ -55,8 +59,10 @@ const ImageCarousel: React.FC = () => {
         className={styles['carousel__swiper']}
         style={{ width: '100%', height: '100%' }}
       >
+        {/* Mapping over images array to create Swiper slides */}
         {images.map((image, index) => (
           <SwiperSlide key={index} className={styles['carousel__slide']}>
+              {/*  rendering of the circle overlay for the based on the active slide */}
             {index === activeIndex && (
               <div className={styles['carousel__circle-overlay']}>
                 <Image
@@ -68,6 +74,7 @@ const ImageCarousel: React.FC = () => {
                 />
               </div>
             )}
+             {/* Device image container */}
             <div className={styles['carousel__image-container']}>
               <Image
                 src={image}
