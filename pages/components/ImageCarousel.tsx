@@ -18,6 +18,7 @@ const ImageCarousel: React.FC = () => {
   const [titleSwiper, setTitleSwiper] = useState<SwiperCore | null>(null);
   const [imageSwiper, setImageSwiper] = useState<SwiperCore | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [slidesPerView, setSlidesPerView] = useState(3);
 
   // array to colde the info we using.
   const titles = ['Mint Ice', 'Strawberry Ice', 'Blue Text', 'Orange Text'];
@@ -26,7 +27,7 @@ const ImageCarousel: React.FC = () => {
   const circles = ['/green-circle.png', '/red-circle.png', '/blue-circle.png', '/orange-circle.png'];
   const backgrounds = ['/green-bg.jpg', '/red-bg.jpg', '/blue-bg.jpg', '/orange-bg.jpg'];
 
- // use effect to synch the controls of the title and image 
+  // use effect to synch the controls of the title and image 
   useEffect(() => {
     if (titleSwiper && imageSwiper) {
       if (titleSwiper.controller && imageSwiper.controller) {
@@ -41,6 +42,24 @@ const ImageCarousel: React.FC = () => {
     document.body.style.backgroundImage = `url(${backgrounds[activeIndex]})`;
   }, [activeIndex]);
 
+  // use effect to handle resize events
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setSlidesPerView(1.5);
+      } else {
+        setSlidesPerView(3);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); 
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <div className={styles['carousel__container']} style={{ backgroundImage: `url(${backgrounds[activeIndex]})` }}>
       <div className={styles['carousel__text-overlay']}>
@@ -50,19 +69,21 @@ const ImageCarousel: React.FC = () => {
 
       <Swiper
         loop={true}
-        slidesPerView={3}
+        slidesPerView={slidesPerView}
         spaceBetween={-50}
         centeredSlides={true}
         autoplay={{ delay: 3000, disableOnInteraction: false }}
         onSwiper={setImageSwiper}
         onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+        navigation
+        pagination={{ clickable: true }}
         className={styles['carousel__swiper']}
         style={{ width: '100%', height: '100%' }}
       >
         {/* Mapping over images array to create Swiper slides */}
         {images.map((image, index) => (
           <SwiperSlide key={index} className={styles['carousel__slide']}>
-              {/*  rendering of the circle overlay for the based on the active slide */}
+            {/*  rendering of the circle overlay for the based on the active slide */}
             {index === activeIndex && (
               <div className={styles['carousel__circle-overlay']}>
                 <Image

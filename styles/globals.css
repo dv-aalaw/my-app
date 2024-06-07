@@ -121,3 +121,36 @@ a {
   justify-content: center;
   align-items: center;
 }
+
+.swiper-button-next {
+  top: 73% !important;
+  color: black !important;
+}
+.swiper-button-prev {
+  top: 73% !important;
+  color: black !important;
+}
+.swiper-button-next {
+  right: 45px;
+}
+
+.swiper-button-prev {
+  left: 45px;
+}
+
+.swiper-pagination {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-pagination-bullet {
+  margin: 0 5px;
+}
+.swiper-pagination {
+  bottom: 0 !important;
+  top: 45% !important;
+}
